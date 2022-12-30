@@ -3,10 +3,12 @@
 #include <calculate_core.h>
 #include <Keypad.h>
 
+
 LiquidCrystal lcd(49, 48, 47, 43, 42, 41);
 
 const int ROW_SIZE = 4;
 const int COL_SIZE = 4;
+const int TONE_PIN = A9;
 
 char KEYS[ROW_SIZE][COL_SIZE] = {
 	{'+', '-', '*', '/'},
@@ -20,8 +22,9 @@ byte COL_PINS[COL_SIZE] = { 29, 28, 27, 26 };
 Keypad keypad = Keypad( makeKeymap(KEYS), ROW_PINS, COL_PINS, ROW_SIZE, COL_SIZE );
 
 void setup() 
-{
+{	
 	Serial.begin(9600);
+	pinMode(TONE_PIN, OUTPUT);
 	lcd.begin(16, 2);
 	lcd.clear();
 }
@@ -61,6 +64,18 @@ void loop()
 
 		if (input_key)
 		{
+			/* tone */
+			tone(TONE_PIN, 523, 50);
+			delay(50);
+			noTone(TONE_PIN);
+
+			/* if the input is more than lcd one line clear the all to re input */
+			if (cursor_index == 16)
+			{
+				lcd_clear();
+				continue;
+			}
+
 			switch (input_key)
 			{
 				/* when the input key is '=' calculate the ans from input word*/
