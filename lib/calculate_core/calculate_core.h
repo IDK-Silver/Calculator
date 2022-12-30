@@ -1,6 +1,8 @@
-#include <iostream>
+#ifndef CALCULATE_CORE
+#define CALCULATE_CORE
+
 #include <string.h>
-using namespace std;
+
 double calculate(char kind,double num1,double num2){
     double result;
     if (kind=='*'){
@@ -40,7 +42,7 @@ double get_calculate(char *input_str)
 
         }
         else{
-            printf("error");
+
         }
 
     }
@@ -74,12 +76,9 @@ double get_calculate(char *input_str)
     }
     result=number[i];
 
-    printf("%f",result);
+    return result;
 }
 
 
-int main (){
-    char input_str[] = "42+2=";
-    get_calculate(input_str);
-    return 0;
-}
+
+#endif
