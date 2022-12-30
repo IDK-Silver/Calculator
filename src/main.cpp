@@ -58,16 +58,20 @@ void loop()
 		cursor_index = 0;
 	};
 
+	auto tone_ = [&] () {
+		/* tone */
+		tone(TONE_PIN, 523, 50);
+		delay(50);
+		noTone(TONE_PIN);
+	};
+
 	while (true)
 	{
 		char input_key = keypad.getKey();
 
 		if (input_key)
 		{
-			/* tone */
-			tone(TONE_PIN, 523, 50);
-			delay(50);
-			noTone(TONE_PIN);
+			tone_();
 
 			/* if the input is more than lcd one line clear the all to re input */
 			if (cursor_index == 16)
@@ -89,7 +93,13 @@ void loop()
 					lcd.print(get_calculate(lcd_text[0]));
 
 					/* wait the press 'C' to next calculate */
-					while ( keypad.getKey() != 'C');
+					do
+					{
+						input_key = keypad.getKey();
+						if (input_key)
+							tone_();
+					} while (input_key != 'C');
+					
 					lcd_clear();
 					break;
 
